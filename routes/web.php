@@ -23,4 +23,9 @@ Route::middleware('auth')->group(function(){
     Route::post('/send-message',[MessageController::class,'store']);
 });
 
+Route::get('/messages', function () {
+    return \App\Models\Message::with('user')->latest()->limit(50)->get();
+});
+
+
 require __DIR__.'/auth.php';

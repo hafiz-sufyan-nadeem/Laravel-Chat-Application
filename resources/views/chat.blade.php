@@ -31,14 +31,23 @@
             document.getElementById('message').value = '';
         });
 
-        window.Echo.private('chat')
-            .listen('.message.sent', (e) => {
+        // AJAX polling system
+        function loadMessages() {
+            fetch('/messages')
+                .then(res => res.json())
+                .then(data => {
+                    let box = document.getElementById('messages');
+                    box.innerHTML = '';
 
-                let msgDiv = document.getElementById('messages');
-                msgDiv.innerHTML += `<p><strong>${e.message.user.name}:</strong> ${e.message.message}</p>`;
-                msgDiv.scrollTop = msgDiv.scrollHeight;
+                    data.forEach(msg => {
+                        box.innerHTML += `<p><strong>${msg.user ? msg.user.name : 'Unknown'}:</strong> ${msg.message}</p>`;
+                    });
 
-            });
+                    box.scrollTop = box.scrollHeight;
+                });
+        }
 
+        setInterval(loadMessages, 2000);
+        loadMessages();
     </script>
 @endsection
