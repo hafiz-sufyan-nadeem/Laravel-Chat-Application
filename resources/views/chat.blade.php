@@ -1,52 +1,44 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Chat App</title>
-</head>
-<body>
+@extends('layouts.app')
 
-<h2>Laravel Real-Time Chat</h2>
+@section('content')
+    <div id="messages" class="border p-2 h-64 overflow-y-scroll mb-4">
+        @foreach($messages as $message)
+            <p><strong>{{ $message->user ? $message->user->name : 'Unknown' }}:</strong> {{ $message->message }}</p>
+        @endforeach
+    </div>
 
-<div id="messages">
-    @foreach($messages as $msg)
-        <p><strong>{{ $msg->user->name }}:</strong> {{ $msg->message }}</p>
-    @endforeach
-</div>
+    <form id="messageForm" class="flex">
+        @csrf
+        <input type="text" id="message" placeholder="Type a message..." class="flex-1 border p-2 mr-2" required>
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2">Send</button>
+    </form>
 
-<form id="messageForm">
-    @csrf
-    <input type="text" name="message" id="message" placeholder="Type message..." required>
-    <button type="submit">Send</button>
-</form>
+    <script>
+        document.getElementById('messageForm').addEventListener('submit', function(e){
+            e.preventDefault();
 
-<script src="/js/app.js"></script>
+            fetch('/send-message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    message: document.getElementById('message').value
+                })
+            });
 
-<script>
-    // send message
-    document.getElementById('messageForm').addEventListener('submit', function(e){
-        e.preventDefault();
-
-        fetch('/send-message', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify({
-                message: document.getElementById('message').value
-            })
+            document.getElementById('message').value = '';
         });
 
-        document.getElementById('message').value = '';
-    });
+        window.Echo.private('chat')
+            .listen('.message.sent', (e) => {
 
-    // listen to new real-time messages
-    window.Echo.join('chat')
-        .listen('.message-sent', (e) => {
-            let msgDiv = document.getElementById('messages');
-            msgDiv.innerHTML += `<p><strong>${e.message.user.name}:</strong> ${e.message.message}</p>`;
-        });
-</script>
+                let msgDiv = document.getElementById('messages');
+                msgDiv.innerHTML += `<p><strong>${e.message.user.name}:</strong> ${e.message.message}</p>`;
+                msgDiv.scrollTop = msgDiv.scrollHeight;
 
-</body>
-</html>
+            });
+
+    </script>
+@endsection
