@@ -8,8 +8,23 @@
             <h2 class="text-lg font-semibold">Real-Time Chat</h2>
         </div>
 
+        {{-- Messages Box --}}
+        <div id="messages" class="p-4 h-96 overflow-y-scroll space-y-3 bg-gray-50">
+            @foreach($messages as $message)
+                <div class="flex flex-col">
+                <span class="font-semibold text-blue-700">
+                    {{ $message->user ? $message->user->name : 'Unknown' }}
+                </span>
 
-    <form id="messageForm" class="flex">
+                    <span class="inline-block bg-white p-3 rounded-xl shadow-sm border text-gray-800">
+                    {{ $message->message }}
+                </span>
+                </div>
+            @endforeach
+        </div>
+
+
+        <form id="messageForm" class="flex">
         @csrf
         <input type="text" id="message" placeholder="Type a message..." class="flex-1 border p-2 mr-2" required>
         <button type="submit" class="bg-blue-500 text-white px-4 py-2">Send</button>
