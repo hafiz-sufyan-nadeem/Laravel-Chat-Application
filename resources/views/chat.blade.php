@@ -1,11 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-    <div id="messages" class="border p-2 h-64 overflow-y-scroll mb-4">
-        @foreach($messages as $message)
-            <p><strong>{{ $message->user ? $message->user->name : 'Unknown' }}:</strong> {{ $message->message }}</p>
-        @endforeach
-    </div>
+    <div class="max-w-3xl mx-auto mt-6 bg-white shadow-lg rounded-lg border">
+
+        {{-- Chat Header --}}
+        <div class="px-4 py-3 border-b bg-gray-100 rounded-t-lg">
+            <h2 class="text-lg font-semibold">Real-Time Chat</h2>
+        </div>
+
 
     <form id="messageForm" class="flex">
         @csrf
