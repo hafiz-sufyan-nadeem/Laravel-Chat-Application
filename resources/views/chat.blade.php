@@ -64,7 +64,7 @@
             document.getElementById('message').value = '';
         });
 
-        // AJAX polling system
+        // Auto-refresh messages
         function loadMessages() {
             fetch('/messages')
                 .then(res => res.json())
@@ -73,7 +73,14 @@
                     box.innerHTML = '';
 
                     data.forEach(msg => {
-                        box.innerHTML += `<p><strong>${msg.user ? msg.user.name : 'Unknown'}:</strong> ${msg.message}</p>`;
+                        box.innerHTML += `
+                        <div class="flex flex-col mb-3">
+                            <span class="font-semibold text-blue-700">${msg.user ? msg.user.name : 'Unknown'}</span>
+                            <span class="inline-block bg-white p-3 rounded-xl shadow-sm border text-gray-800">
+                                ${msg.message}
+                            </span>
+                        </div>
+                    `;
                     });
 
                     box.scrollTop = box.scrollHeight;
