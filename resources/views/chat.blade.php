@@ -24,11 +24,27 @@
         </div>
 
 
-        <form id="messageForm" class="flex">
-        @csrf
-        <input type="text" id="message" placeholder="Type a message..." class="flex-1 border p-2 mr-2" required>
-        <button type="submit" class="bg-blue-500 text-white px-4 py-2">Send</button>
-    </form>
+        {{-- Message Input Box --}}
+        <div class="border-t p-3 bg-white rounded-b-lg">
+            <form id="messageForm" class="flex gap-2">
+                @csrf
+                <input
+                    type="text"
+                    id="message"
+                    placeholder="Type your message..."
+                    class="flex-1 border rounded-full px-4 py-2 focus:outline-none focus:border-blue-500"
+                    required
+                >
+                <button
+                    type="submit"
+                    class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-all"
+                >
+                    Send
+                </button>
+            </form>
+        </div>
+    </div>
+
 
     <script>
         document.getElementById('messageForm').addEventListener('submit', function(e){
