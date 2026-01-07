@@ -88,6 +88,6 @@
         }
 
         setInterval(loadMessages, 2000);
-        loadMessages();
+        // loadMessages();
     </script>
 @endsection
