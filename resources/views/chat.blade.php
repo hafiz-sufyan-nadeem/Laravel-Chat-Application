@@ -25,7 +25,7 @@
 
 
         {{-- Message Input Box --}}
-{{--        <div class="border-t p-3 bg-white rounded-b-lg">--}}
+        <div class="border-t p-3 bg-white rounded-b-lg">
             <form id="messageForm" class="flex gap-2">
                 @csrf
                 <input
